@@ -1,0 +1,6 @@
+# All Compressed XML files
+
+
+*.xml.bz2
+
+indexdir/*
