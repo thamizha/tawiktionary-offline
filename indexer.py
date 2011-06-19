@@ -78,6 +78,9 @@ def create_index():
             writer = ix.writer()
             # Reset page count after each commit
             page_count = 0
+    # to commit the last bit in writer
+    try:
+        writer.commit()
     bzfile.close()
     f.close()
         
