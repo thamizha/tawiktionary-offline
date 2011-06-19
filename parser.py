@@ -14,27 +14,23 @@ markup separately
 import bz2
 import os
 import re
+import codecs
 from searcher import search_for
 
 import BeautifulSoup
-
-def get_option(res):
-    '''
-    The get_option function displays the search results for the user
-    and returns the option chosen by the user
-    '''
-    for re in res:
-        print str(res.index(re))+'. '+re['title']
-    return int(raw_input('Enter you option: '))
     
 def get_markup(srchstr):
     '''
     The get_markup funtion get the search string as the input parameter
     and returns the MediaWiki text as return
     '''
-    markup = ''
+    #markup = ''
     results = search_for(srchstr)
-    option = get_option(results)
+    #print the Text Matches
+    for r in results:
+        print str(results.index(r))+'. '+r['title']
+    #Get the option
+    option = int(raw_input('Enter you option: '))
 
     optdict = results[option]
 
@@ -52,12 +48,13 @@ def get_markup(srchstr):
     txt=dom.find('text')
     if txt is not None:
         markup = txt.text
+    else:
+        markup = ''
     return markup
 
 if __name__ == "__main__":
     mtxt = get_markup(raw_input('Enter your Query:'))
+    f = codecs.open('markup.txt', encoding='utf-8', mode='a')
+    f.write(mtxt)
+    f.close()
     print mtxt
-
-
-
-

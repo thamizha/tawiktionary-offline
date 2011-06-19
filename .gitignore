@@ -4,4 +4,5 @@
 *.xml.bz2
 
 *.pyc
+*.txt
 indexdir/*
