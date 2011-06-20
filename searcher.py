@@ -15,12 +15,12 @@ def search_for(text):
     ix = index.open_dir("indexdir")
     res = []
     with ix.searcher() as searcher:
-        query = QueryParser("title", ix.schema).parse(unicode(text))
-        results = searcher.search(query, limit=None, sortedby='file_name')
+        query = QueryParser("word", ix.schema).parse(unicode(text))
+        results = searcher.search(query, limit=None)
         for result in results:
             temp = {}
-            temp['file_name'] = result['file_name']
-            temp['title'] = result['title']
+            temp['meaning'] = result['meaning']
+            temp['word'] = result['word']
             res.append(temp)
     return res
 
@@ -28,5 +28,5 @@ if __name__ == "__main__":
     searchterm = raw_input("Enter the Search Term: ")
     r = search_for(searchterm)
     for rs in r:
-        print unicode(rs['title'])
+        print unicode(rs['word'])
 
