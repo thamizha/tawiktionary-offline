@@ -6,37 +6,8 @@ hence the files are split into smaller junks and indexed using the indexer.py.
 
 This script would split the large .bz2 file into smaller .bz2 files.
 
-Note: Make sure that page data isn't split between the smaller bits.
 '''
 
-#-------------------------------------------------------------------------
-'''
-Steps
------
-1. Set pages_per_file = 2000
-2. Open the large .xml.bz2 file
-3. parse the large file as such without decompression
-4. Read each page block and into a file buffer until count is 1000
-    or end of file
-5. Write the buffer as a file
-6. Repeat 4&5 until end of file
-
-Pseudo code - for splitting
----------------------------
-open input file
-open output file 1
-count = 0
-for each line in file:
-    write to output file
-    count = count + 1
-    if count > maxlines:
-         close output file
-         open next output file
-         count = 0
-
-
-'''
-#-------------------------------------------------------------------------
 import os
 import bz2
 
@@ -71,7 +42,7 @@ def split_xml(filename):
     except:
         print 'Files already close'
 
-#-------------------------------------------------------------------------
+
 if __name__ == '__main__':
     # When the script is self run
     split_xml('wiki-files/tawiktionary-20110518-pages-articles.xml.bz2')
