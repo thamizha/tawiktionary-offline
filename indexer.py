@@ -38,7 +38,7 @@ def dump_file():
     print files
     return files[0]
 
-def create_index():
+def create_bulk_index():
     ''' This is the main function '''
     # check wether a index exists
     if not os.path.exists("indexdir"):
@@ -83,13 +83,14 @@ def create_index():
         writer.commit()
     bzfile.close()
     f.close()
-        
+
+def 
     
 
 #-----------------------------------------------------------------------
 
 if __name__ == "__main__":
-    create_index()
+    create_bulk_index()
     '''
     # check wether a index exists
     if not os.path.exists("indexdir"):
