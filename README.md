@@ -3,6 +3,7 @@ This code repository contains the source files of the software Karthika, which i
 Dictionary made using the Wiktionary data obtained from its XML dumps. The words and its meanings
 are parsed from the dump and are indexed using the Whoosh Search Engine. There are two kinds of 
 indexing to be done:
+
 * creating the index of words and complete text associated with it - this results in large index size
 of about a few hundred megabytes and indexing takes more than a hour time in a average machine. 
 This is the currently employed method in the indexer.py and corresponding searching in searcher.py.
@@ -19,11 +20,11 @@ is being worked out.
 taken to parse it and produce a readable content.
 
 ## Dependencies
-### 1.Whoosh
+### 1. Whoosh
 The indexing and searching are caaried out using the Whoosh Python Search Engine.
 http://pypi.python.org/pypi/Whoosh/
 
-### 2.wxPython
+### 2. wxPython
 The GUI is written using the wxPython library
 http://www.wxpython.org/
 
@@ -31,6 +32,7 @@ http://www.wxpython.org/
 Before going down, download and install the dependencies mentioned above.
 
 This following instruction is for the download of source code v0.1.0 from this repo:
+
 1. Download the code version v0.1.0 from here
 2. Unzip it in a suitable location to get the folder "tawiktionary-offline"
 3. Download the latest wiktionary XML dump from http://dumps.wikimedia.org/tawiktionary/latest/tawiktionary-latest-pages-articles.xml.bz2
