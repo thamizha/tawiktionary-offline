@@ -28,5 +28,10 @@ if __name__ == "__main__":
     searchterm = raw_input("Enter the Search Term: ")
     r = search_for(searchterm)
     for rs in r:
-        print unicode(rs['word'])
+        print str(r.index(rs)),unicode(rs['word'])
+    choice = int(raw_input('Enter your option: '))
+    opt =  r[choice]
+    print opt['meaning']
+        
+        
 
