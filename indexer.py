@@ -85,9 +85,11 @@ def create_index(mode):
     
     elif mode == 2: # Split Index
         # read all the file in the bits folder
-        for fil in os.listdir("wiki-files/bits"):
+        if len(os.listdir("chunks")) < 1:
+            return 'Error! Run Splitter first!'
+        for fil in os.listdir("chunks"):
             # check the object is a file and not folder
-            if os.path.isfile(os.path.join("wiki-files/bits",fil)):
+            if os.path.isfile(os.path.join("chunks",fil)):
                 # create a writer to write index
                 writer = ix.writer()
                 # open the bz2 file for reading
@@ -103,11 +105,6 @@ def create_index(mode):
                 # commit once each file is done
                 writer.commit()
                 print fil+'-> Indexed'
-
-
-    
-
-#-----------------------------------------------------------------------
 
 if __name__ == "__main__":
     create_index(raw_input("Enter your option [1. bulk index 2. split index]: "))
