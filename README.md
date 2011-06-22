@@ -33,7 +33,7 @@ Before going down, download and install the dependencies mentioned above.
 
 This following instruction is for the download of source code v0.1.0 from this repo:
 
-1. Download the code version v0.1.0 from here
+1. Download the code version v0.1.0 from [here] (https://github.com/tecoholic/tawiktionary-offline/zipball/v0.1.0)
 2. Unzip it in a suitable location to get the folder "tawiktionary-offline"
 3. Download the latest wiktionary XML dump from http://dumps.wikimedia.org/tawiktionary/latest/tawiktionary-latest-pages-articles.xml.bz2
 4. Create a directory inside the tawiktionary-offline folder named "wiki-files"

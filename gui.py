@@ -5,9 +5,10 @@ to enter the query input and meaning output.
 '''
 
 import os
+
 import wx
-from wx.lib.wordwrap import wordwrap
 import wx.richtext
+from wx.lib.wordwrap import wordwrap
 
 from searcher import *
 
@@ -35,8 +36,10 @@ class MainWindow(wx.Frame):
 
         #Widgets
         # 1. textbox 2. button 3. textarea 4.Listbox
-        self.SearchBox = wx.SearchCtrl(self, size=(200,-1), style=wx.TE_PROCESS_ENTER)
-        self.ResultBox = wx.richtext.RichTextCtrl(self, size=(300,500), style=wx.TE_MULTILINE)
+        self.SearchBox = wx.SearchCtrl(self, size=(200,-1),
+                                       style=wx.TE_PROCESS_ENTER)
+        self.ResultBox = wx.richtext.RichTextCtrl(self, size=(300,500),
+                                                  style=wx.TE_MULTILINE)
         self.WordList = wx.ListBox(self, size=(160,-1))
 
         # Set values
@@ -70,15 +73,15 @@ class MainWindow(wx.Frame):
         self.Show(True)
 
     def SearchIt(self, e):
-        ''' The Searchit function gets the input from SearchBox and lists the Word matches
-        in the ListBox '''
+        ''' The Searchit function gets the input from SearchBox and lists
+        the Word matches in the ListBox '''
         text = self.SearchBox.GetValue()
         self.Matches = search_for(text)
         self.WordList.Set([r['word'] for r in self.Matches])
         
     def ShowMeaning(self, event):
-        ''' The ShowMeaning function prints the meaning for the word selected for in the
-        ListBox '''
+        ''' The ShowMeaning function prints the meaning for the word selected
+        for in the ListBox '''
         opted = self.Matches[event.GetSelection()]
         self.ResultBox.SetValue('')
         self.ResultBox.WriteText(opted['meaning'])
@@ -88,22 +91,29 @@ class MainWindow(wx.Frame):
         self.Close(True)
 
     def ShowAbout(self, e):
-        ''' ShowAbout function displays the About information of the application '''
+        ''' ShowAbout function displays the About information of the application
+        '''
         info = wx.AboutDialogInfo()
         info.Name = "Karthika"
         info.Version = "0.1.0"
         info.Copyright = "(c) Arunmozhi 2011"
-        info.Description = wordwrap("Kathika is a offline Dictionary build using the Wiktionary"
-                                    "data of the WikiMedia Foundation. It is build using Python"
-                                    " with wxPython for the GUI. The underlying data is extracted"
-                                    " from the XML dumps of the Wiktionary site. The indexing and "
-                                    "searching is using the Whoosh Search Engine.", 400, wx.ClientDC(self))
-        info.WebSite = ("https://github.com/tecoholic/tawiktionary-offline", "Project GitHub Page")
+        info.Description = wordwrap("Kathika is a offline Dictionary build "
+                                    "using the Wiktionary data of the WikiMedia"
+                                    "Foundation. It is build using Python with"
+                                    "wxPython for the GUI. The underlying data "
+                                    "is extracted from the XML dumps of the "
+                                    "Wiktionary site.The indexing and searching"
+                                    "is using the Whoosh Search Engine.",
+                                    400, wx.ClientDC(self))
+        info.WebSite = ("https://github.com/tecoholic/tawiktionary-offline",
+                        "Project GitHub Page")
         info.Developers = ["Arunmozhi"]
-        info.License = wordwrap("No License has been decided yet. You are free to modify and "
-                                "distribute the program as per your needs without any kind of "
-                                "attribution of credits whatsoever for the original developer."
-                                "But requested to maintain the resulting software name as Karthika.",
+        info.License = wordwrap("No License has been decided yet. You are free"
+                                "to modify and distribute the program as per"
+                                "your needs without any kind of attribution of"
+                                "credits whatsoever for the original developer."
+                                "But requested to maintain the resulting "
+                                "software name as Karthika.",
                                 400, wx.ClientDC(self))
         wx.AboutBox(info)
                                     
