@@ -83,7 +83,7 @@ class MainWindow(wx.Frame):
         ''' The ShowMeaning function prints the meaning for the word selected
         for in the ListBox '''
         opted = self.Matches[event.GetSelection()]
-        meaning_text = opted['meaning']
+        meaning_text = get_markup(opted['word'],opted['meaning'])
         self.ResultBox.SetValue('')
         self.ResultBox.WriteText(meaning_text)
 

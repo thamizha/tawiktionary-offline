@@ -40,8 +40,7 @@ def get_markup(word,meaning):
     if filexp.match(meaning):
         #parse the file and return wiki text
         #print "Contains File Name"
-        bzfile = bz2.BZ2File(os.path.join("chunks",
-                                          meaning))
+        bzfile = bz2.BZ2File(os.path.join("chunks",meaning))
         xmltext = '<page>'
         writ = False
         for li in bzfile:
