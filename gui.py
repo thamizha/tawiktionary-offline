@@ -7,6 +7,7 @@ to enter the query input and meaning output.
 import os
 import wx
 from wx.lib.wordwrap import wordwrap
+import wx.richtext
 
 from searcher import *
 
@@ -35,11 +36,13 @@ class MainWindow(wx.Frame):
         #Widgets
         # 1. textbox 2. button 3. textarea 4.Listbox
         self.SearchBox = wx.SearchCtrl(self, size=(200,-1), style=wx.TE_PROCESS_ENTER)
-        self.ResultBox = wx.TextCtrl(self, size=(300,500), style=wx.TE_MULTILINE)
+        self.ResultBox = wx.richtext.RichTextCtrl(self, size=(300,500), style=wx.TE_MULTILINE)
         self.WordList = wx.ListBox(self, size=(160,-1))
 
         # Set values
+        self.SearchBox.ShowCancelButton(True)
         self.ResultBox.SetEditable(False)
+        self.ResultBox.BeginFontSize(11)
                 
         #Events
         self.Bind(wx.EVT_TEXT_ENTER, self.SearchIt,self.SearchBox)
