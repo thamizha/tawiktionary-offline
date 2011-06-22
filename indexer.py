@@ -80,6 +80,8 @@ def create_index(mode):
         # to commit the last bit in writer
         try:
             writer.commit()
+        except:
+            print "File commited already"
         bzfile.close()
         #f.close()
     
@@ -93,13 +95,13 @@ def create_index(mode):
                 # create a writer to write index
                 writer = ix.writer()
                 # open the bz2 file for reading
-                bzfile = bz2.BZ2File(os.path.join("wiki-files/bits",fil))
+                bzfile = bz2.BZ2File(os.path.join("chunks",fil))
                 # get line by line
                 for line in bzfile:
                     # if "title" is found index it
                     if "<title>" in line:
                         soup = BeautifulSoup.BeautifulSoup(line)
-                        utitle = unicode(soup.find('title').text, 'utf-8')
+                        utitle = soup.find('title').text
                         ufile = unicode(fil, 'utf-8')
                         writer.add_document(word=utitle, meaning=ufile)
                 # commit once each file is done
