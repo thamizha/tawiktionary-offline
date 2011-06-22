@@ -83,8 +83,9 @@ class MainWindow(wx.Frame):
         ''' The ShowMeaning function prints the meaning for the word selected
         for in the ListBox '''
         opted = self.Matches[event.GetSelection()]
+        meaning_text = opted['meaning']
         self.ResultBox.SetValue('')
-        self.ResultBox.WriteText(opted['meaning'])
+        self.ResultBox.WriteText(meaning_text)
 
     def ExitApp(self, e):
         ''' ExitApp closes the application '''
