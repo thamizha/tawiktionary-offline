@@ -11,6 +11,7 @@ indexed using the indexer.py.
 import os
 import bz2
 
+
 def split_xml(filename):
     ''' The function gets the filename of wiktionary.xml.bz2 file as  input
     and creates smallers chunks of it in a the diretory chunks

@@ -11,6 +11,8 @@ import wx.richtext
 from wx.lib.wordwrap import wordwrap
 
 from searcher import *
+from splitter import split_xml
+from indexer import create_index
 
 class MainWindow(wx.Frame):
     '''  This class defines the basis of the GUI of the entire application '''
@@ -19,6 +21,11 @@ class MainWindow(wx.Frame):
 
         # Menu
         filemenu = wx.Menu()
+        filemenu.Append(wx.ID_FILE1, "&Split",
+                        "Create smaller chunks from large XML file")
+        filemenu.Append(wx.ID_FILE2, "&Index",
+                        "Create the index of words and meanings for searching")
+        filemenu.AppendSeparator()
         filemenu.Append(wx.ID_EXIT, "&Exit\tAlt+F4", "Exit the program")
 
         helpmenu = wx.Menu()
@@ -27,6 +34,7 @@ class MainWindow(wx.Frame):
         menuBar = wx.MenuBar()
         menuBar.Append(filemenu, "&File")
         menuBar.Append(helpmenu, "&Help")
+      
 
         self.SetMenuBar(menuBar)
 
@@ -39,12 +47,12 @@ class MainWindow(wx.Frame):
         self.SearchBox = wx.SearchCtrl(self, size=(200,-1),
                                        style=wx.TE_PROCESS_ENTER)
         self.ResultBox = wx.richtext.RichTextCtrl(self, size=(300,500),
-                                                  style=wx.TE_MULTILINE)
+                                                  style=wx.TE_MULTILINE|
+                                                  wx.TE_READONLY)
         self.WordList = wx.ListBox(self, size=(160,-1))
 
         # Set values
         self.SearchBox.ShowCancelButton(True)
-        self.ResultBox.SetEditable(False)
         self.ResultBox.BeginFontSize(11)
                 
         #Events
@@ -52,6 +60,8 @@ class MainWindow(wx.Frame):
         self.Bind(wx.EVT_LISTBOX, self.ShowMeaning, self.WordList)
         self.Bind(wx.EVT_MENU, self.ExitApp, id=wx.ID_EXIT)
         self.Bind(wx.EVT_MENU, self.ShowAbout, id=wx.ID_ABOUT)
+        self.Bind(wx.EVT_MENU, self.RunSplitter, id=wx.ID_FILE1)
+        self.Bind(wx.EVT_MENU, self.RunIndexer, id=wx.ID_FILE2)
         
         #sizers for placemnt
         self.hsizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -117,7 +127,15 @@ class MainWindow(wx.Frame):
                                 "software name as Karthika.",
                                 400, wx.ClientDC(self))
         wx.AboutBox(info)
-                                    
+
+    def RunSplitter(self, event):
+        ''' The RunSplitter function runs the splitter.py function '''
+        split_xml('wiki-files/tawiktionary-latest-pages-articles.xml.bz2')
+
+    def RunIndexer(self, event):
+        ''' The RunIndexer function runs indexer.py function '''
+        create_index(2)
+        
 
 if __name__ == '__main__':
     app = wx.App(False)
