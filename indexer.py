@@ -33,7 +33,6 @@ class IndexDialog(wx.Dialog):
         self.splitrb = wx.RadioButton(self, -1,  'Split Indexing')
         self.gauge = wx.Gauge(self, -1, 100, size=(250,25))
         self.indbtn = wx.Button(self, wx.ID_APPLY, "Start Indexing")
-        self.timer = wx.Timer(self)
 
         self.vsizer = wx.BoxSizer(wx.VERTICAL)
         self.vsizer.Add(self.txt, 0,
@@ -49,61 +48,79 @@ class IndexDialog(wx.Dialog):
 
         #binders
         self.Bind(wx.EVT_BUTTON, self.RunIndexer, id=wx.ID_APPLY)
-        self.Bind(wx.EVT_TIMER, self.TimerHandler)
         
         #layout sizers
         self.SetSizer(self.vsizer)
         self.SetAutoLayout(1)
         self.vsizer.Fit(self)
 
-    def __del__(self):
-        self.timer.Stop()
-
-    def TimerHandler(self, event):
-        self.gauge.Pulse()
 
     def RunIndexer(self, event):
         ''' This function runs the indexer script '''
-        self.timer.Start(100)
         if self.bulkrb.GetValue():
-            create_index(1)
+            self.create_bulk_index()
         elif self.splitrb.GetValue():
-            create_index(2)
+            self.create_split_index()
 
-    
-def dump_file():
-    ''' This function searches the directory and returns the latest xml dump file'''
-    files = [fil for fil in os.listdir('wiki-files') if os.path.isfile(os.path.join('wiki-files',fil))]
-    #print os.listdir('wiki-files')
-    print files
-    return files[0]
+    def dump_file(self):
+        ''' This function searches the directory and returns the latest xml dump
+        file.
+        '''
+        files = [fil for fil in os.listdir('wiki-files')
+                 if os.path.isfile(os.path.join('wiki-files',fil))]
+        #print os.listdir('wiki-files')
+        print files
+        return files[0]
 
-def create_index(mode):
-    ''' The create_index function is used to create the index of words for the Wiktionary. The
-    function operates in two modes.\n\nMode '1':\nBulk Index -> The big and complete XML file
-    is parsed and index of both word and he corresponding content of wikipage called the meaning.
-    \n\nMode '2':\nSplit Index -> The files are split into smaller chunks and the words and the
-    filenames which contain them are indexed
-    '''
-    try:
-        mode = int(mode)
-    except:
-        return 'Error! Input correct mode'
-    
-    # check wether a index exists
-    if not os.path.exists("indexdir"):
-        os.mkdir("indexdir")
-    # create a indexer object
-    ix = index.create_in("indexdir", MySchema)
-    ix = index.open_dir("indexdir")
-    
-    if mode == 1: # Bulk Index
+    def create_split_index(self):
+        ''' This function creates the index for the Split files in the chunks
+        directory. Split Index -> The files are split into smaller chunks and
+        the words and the filenames which contain them are indexed
+        '''
+        if not os.path.exists("indexdir"):
+            os.mkdir("indexdir")
+        # create a indexer object
+        ix = index.create_in("indexdir", MySchema)
+        ix = index.open_dir("indexdir")
+        
+        # read all the file in the bits folder
+        if len(os.listdir("chunks")) < 1:
+            return 'Error! Run Splitter first!'
+        for fil in os.listdir("chunks"):
+            # check the object is a file and not folder
+            if os.path.isfile(os.path.join("chunks",fil)):
+                # create a writer to write index
+                writer = ix.writer()
+                # open the bz2 file for reading
+                bzfile = bz2.BZ2File(os.path.join("chunks",fil))
+                # get line by line
+                for line in bzfile:
+                    # if "title" is found index it
+                    if "<title>" in line:
+                        soup = BeautifulSoup.BeautifulSoup(line)
+                        utitle = soup.find('title').text
+                        ufile = unicode(fil, 'utf-8')
+                        writer.add_document(word=utitle, meaning=ufile)
+                # commit once each file is done
+                writer.commit()
+                print fil+'-> Indexed'
+
+    def create_bulk_index(self):
+        ''' Bulk Index -> The big and complete XML file is parsed and index of
+        both word and he corresponding content of wikipage called the meaning.
+        '''
+        if not os.path.exists("indexdir"):
+            os.mkdir("indexdir")
+        # create a indexer object
+        ix = index.create_in("indexdir", MySchema)
+        ix = index.open_dir("indexdir")
+
         # Some function globals
         page_count = 0
         writ = False
         xmlstr = ''
         #Open the dump file
-        bzfile = bz2.BZ2File(os.path.join('wiki-files',dump_file()))
+        bzfile = bz2.BZ2File(os.path.join('wiki-files',self.dump_file()))
         #f = codecs.open('list.txt', encoding='utf-8', mode='w')
         # create a writer to write index
         writer = ix.writer()
@@ -136,29 +153,7 @@ def create_index(mode):
             print "File commited already"
         bzfile.close()
         #f.close()
-    
-    elif mode == 2: # Split Index
-        # read all the file in the bits folder
-        if len(os.listdir("chunks")) < 1:
-            return 'Error! Run Splitter first!'
-        for fil in os.listdir("chunks"):
-            # check the object is a file and not folder
-            if os.path.isfile(os.path.join("chunks",fil)):
-                # create a writer to write index
-                writer = ix.writer()
-                # open the bz2 file for reading
-                bzfile = bz2.BZ2File(os.path.join("chunks",fil))
-                # get line by line
-                for line in bzfile:
-                    # if "title" is found index it
-                    if "<title>" in line:
-                        soup = BeautifulSoup.BeautifulSoup(line)
-                        utitle = soup.find('title').text
-                        ufile = unicode(fil, 'utf-8')
-                        writer.add_document(word=utitle, meaning=ufile)
-                # commit once each file is done
-                writer.commit()
-                print fil+'-> Indexed'
+        
 
 if __name__ == "__main__":
-    create_index(raw_input("Enter your option [1. bulk index 2. split index]: "))
+    print 'This file is not supposed to be run separately!'

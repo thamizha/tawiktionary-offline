@@ -6,3 +6,5 @@
 *.pyc
 *.txt
 indexdir/*
+indexdir_new/*
+indexdir_old/*
