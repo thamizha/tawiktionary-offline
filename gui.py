@@ -14,6 +14,58 @@ from searcher import *
 from splitter import split_xml
 from indexer import create_index
 
+class IndexDialog(wx.Dialog):
+    ''' This class defines the dialog box to be shown for carrying out Indexing
+    '''
+    def __init__(self, parent, id, title):
+        wx.Dialog.__init__(self, parent, id, title)
+
+        self.txt = wx.StaticText(self, -1, "Choose the method of indexing",
+                                 style=wx.ALIGN_LEFT)
+        self.bulkrb = wx.RadioButton(self, -1, 'Bulk Indexing', 
+                                     style=wx.RB_GROUP)
+        self.splitrb = wx.RadioButton(self, -1,  'Split Indexing')
+        self.gauge = wx.Gauge(self, -1, 100, size=(250,25))
+        self.indbtn = wx.Button(self, wx.ID_APPLY, "Start Indexing")
+        self.timer = wx.Timer(self)
+
+        self.vsizer = wx.BoxSizer(wx.VERTICAL)
+        self.vsizer.Add(self.txt, 0,
+                        wx.EXPAND|wx.TOP|wx.RIGHT|wx.LEFT, border=10)
+        self.vsizer.Add(self.bulkrb, 0,
+                        wx.EXPAND|wx.TOP|wx.RIGHT|wx.LEFT, border=10)
+        self.vsizer.Add(self.splitrb, 0,
+                        wx.EXPAND|wx.TOP|wx.RIGHT|wx.LEFT|wx.BOTTOM, border=10)
+        self.vsizer.Add(self.gauge, 0, wx.EXPAND|wx.RIGHT|wx.LEFT|wx.BOTTOM,
+                        border=10)
+        self.vsizer.Add(self.indbtn, 0, wx.ALIGN_RIGHT|wx.RIGHT|wx.BOTTOM,
+                        border = 10)
+
+        #binders
+        self.Bind(wx.EVT_BUTTON, self.RunIndexer, id=wx.ID_APPLY)
+        self.Bind(wx.EVT_TIMER, self.TimerHandler)
+        
+        #layout sizers
+        self.SetSizer(self.vsizer)
+        self.SetAutoLayout(1)
+        self.vsizer.Fit(self)
+
+    def __del__(self):
+        self.timer.Stop()
+
+    def TimerHandler(self, event):
+        self.gauge.Pulse()
+
+    def RunIndexer(self, event):
+        ''' This function runs the indexer script '''
+        self.timer.Start(100)
+        if self.bulkrb.GetValue():
+            create_index(1)
+        elif self.splitrb.GetValue():
+            create_index(2)
+        
+        
+
 class MainWindow(wx.Frame):
     '''  This class defines the basis of the GUI of the entire application '''
     def __init__(self,parent, title):
@@ -33,8 +85,7 @@ class MainWindow(wx.Frame):
 
         menuBar = wx.MenuBar()
         menuBar.Append(filemenu, "&File")
-        menuBar.Append(helpmenu, "&Help")
-      
+        menuBar.Append(helpmenu, "&Help")      
 
         self.SetMenuBar(menuBar)
 
@@ -61,7 +112,7 @@ class MainWindow(wx.Frame):
         self.Bind(wx.EVT_MENU, self.ExitApp, id=wx.ID_EXIT)
         self.Bind(wx.EVT_MENU, self.ShowAbout, id=wx.ID_ABOUT)
         self.Bind(wx.EVT_MENU, self.RunSplitter, id=wx.ID_FILE1)
-        self.Bind(wx.EVT_MENU, self.RunIndexer, id=wx.ID_FILE2)
+        self.Bind(wx.EVT_MENU, self.OpenIndexDialog, id=wx.ID_FILE2)
         
         #sizers for placemnt
         self.hsizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -132,9 +183,13 @@ class MainWindow(wx.Frame):
         ''' The RunSplitter function runs the splitter.py function '''
         split_xml('wiki-files/tawiktionary-latest-pages-articles.xml.bz2')
 
-    def RunIndexer(self, event):
+    def OpenIndexDialog(self, event):
         ''' The RunIndexer function runs indexer.py function '''
-        create_index(2)
+        #create_index(2)
+        dia = IndexDialog(self, -1, "Indexer")
+        dia.ShowModal()
+        dia.Destroy()
+        return True
         
 
 if __name__ == '__main__':

@@ -1,4 +1,4 @@
-# tawiktionary-offline
+# Karthika - A Offline Tamil Wiktionary
 This code repository contains the source files of the software Karthika, which is a offline
 Dictionary made using the Wiktionary data obtained from its XML dumps. The words and its meanings
 are parsed from the dump and are indexed using the Whoosh Search Engine. There are two kinds of 
