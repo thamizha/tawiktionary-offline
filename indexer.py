@@ -26,13 +26,19 @@ class IndexDialog(wx.Dialog):
     def __init__(self, parent, id, title):
         wx.Dialog.__init__(self, parent, id, title)
 
+        log_text = "Note:\n1. Bulk Indexing takes over 1 Hour to complete and \
+                    choose it only if you have patience.\n2. Split indexing is \
+                    faster and only takes about 15 min. But make sure you have \
+                    run File -> Split before running split indexing."
+
         self.txt = wx.StaticText(self, -1, "Choose the method of indexing",
                                  style=wx.ALIGN_LEFT)
         self.bulkrb = wx.RadioButton(self, -1, 'Bulk Indexing', 
                                      style=wx.RB_GROUP)
         self.splitrb = wx.RadioButton(self, -1,  'Split Indexing')
-        self.gauge = wx.Gauge(self, -1, 100, size=(250,25))
         self.indbtn = wx.Button(self, wx.ID_APPLY, "Start Indexing")
+        self.log = wx.TextCtrl(self, 100, log_text, size=(350,200),
+                               style=wx.TE_MULTILINE|wx.TE_READONLY)
 
         self.vsizer = wx.BoxSizer(wx.VERTICAL)
         self.vsizer.Add(self.txt, 0,
@@ -41,7 +47,7 @@ class IndexDialog(wx.Dialog):
                         wx.EXPAND|wx.TOP|wx.RIGHT|wx.LEFT, border=10)
         self.vsizer.Add(self.splitrb, 0,
                         wx.EXPAND|wx.TOP|wx.RIGHT|wx.LEFT|wx.BOTTOM, border=10)
-        self.vsizer.Add(self.gauge, 0, wx.EXPAND|wx.RIGHT|wx.LEFT|wx.BOTTOM,
+        self.vsizer.Add(self.log, 0, wx.EXPAND|wx.RIGHT|wx.LEFT|wx.BOTTOM,
                         border=10)
         self.vsizer.Add(self.indbtn, 0, wx.ALIGN_RIGHT|wx.RIGHT|wx.BOTTOM,
                         border = 10)
@@ -69,7 +75,7 @@ class IndexDialog(wx.Dialog):
         files = [fil for fil in os.listdir('wiki-files')
                  if os.path.isfile(os.path.join('wiki-files',fil))]
         #print os.listdir('wiki-files')
-        print files
+        #print files
         return files[0]
 
     def create_split_index(self):
@@ -85,7 +91,7 @@ class IndexDialog(wx.Dialog):
         
         # read all the file in the bits folder
         if len(os.listdir("chunks")) < 1:
-            return 'Error! Run Splitter first!'
+            self.log.AppendText('Error! Run Splitter first!')
         for fil in os.listdir("chunks"):
             # check the object is a file and not folder
             if os.path.isfile(os.path.join("chunks",fil)):
@@ -101,9 +107,11 @@ class IndexDialog(wx.Dialog):
                         utitle = soup.find('title').text
                         ufile = unicode(fil, 'utf-8')
                         writer.add_document(word=utitle, meaning=ufile)
+                        self.log.AppendText(utitle+'\n')
                 # commit once each file is done
+                self.log.AppendText( '\n\n'+fil+'-> Indexed' )
                 writer.commit()
-                print fil+'-> Indexed'
+                
 
     def create_bulk_index(self):
         ''' Bulk Index -> The big and complete XML file is parsed and index of
@@ -138,7 +146,7 @@ class IndexDialog(wx.Dialog):
                 #write to index
                 writer.add_document(word=title, meaning=txt)
                 #f.write(title+'\n')
-                print title
+                self.log.AppendText( title+'\n' )
                 page_count += 1
                 xmlstr = ''
             if page_count > 500:
@@ -150,7 +158,7 @@ class IndexDialog(wx.Dialog):
         try:
             writer.commit()
         except:
-            print "File commited already"
+            self.log.AppendText( "\n\nFile commited !!" )
         bzfile.close()
         #f.close()
         
