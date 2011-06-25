@@ -11,7 +11,7 @@ import wx.richtext
 from wx.lib.wordwrap import wordwrap
 
 from searcher import *
-from splitter import split_xml
+from splitter import RunSplitter
 from indexer import IndexDialog
 
 class MainWindow(wx.Frame):
@@ -53,7 +53,7 @@ class MainWindow(wx.Frame):
         # Set values
         self.SearchBox.ShowCancelButton(True)
         self.ResultBox.BeginFontSize(11)
-                
+        self.RunSplitter = RunSplitter
         #Events
         self.Bind(wx.EVT_TEXT_ENTER, self.SearchIt,self.SearchBox)
         self.Bind(wx.EVT_LISTBOX, self.ShowMeaning, self.WordList)
@@ -127,13 +127,9 @@ class MainWindow(wx.Frame):
                                 400, wx.ClientDC(self))
         wx.AboutBox(info)
 
-    def RunSplitter(self, event):
-        ''' The RunSplitter function runs the splitter.py function '''
-        split_xml('wiki-files/tawiktionary-latest-pages-articles.xml.bz2')
 
     def OpenIndexDialog(self, event):
         ''' The RunIndexer function runs indexer.py function '''
-        #create_index(2)
         dia = IndexDialog(self, -1, "Indexer")
         dia.ShowModal()
         dia.Destroy()
