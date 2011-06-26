@@ -8,3 +8,5 @@
 indexdir/*
 indexdir_new/*
 indexdir_old/*
+build/*
+dist/*

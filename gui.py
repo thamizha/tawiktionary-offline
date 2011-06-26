@@ -105,7 +105,7 @@ class MainWindow(wx.Frame):
         '''
         info = wx.AboutDialogInfo()
         info.Name = "Karthika"
-        info.Version = "0.1.0"
+        info.Version = "0.2.0"
         info.Copyright = "(c) Arunmozhi 2011"
         info.Description = wordwrap("Kathika is a offline Dictionary build "
                                     "using the Wiktionary data of the WikiMedia"
@@ -138,7 +138,7 @@ class MainWindow(wx.Frame):
 
 if __name__ == '__main__':
     app = wx.App(False)
-    frame = MainWindow(None, "Karthika 0.1 - A Offline taWiktionary")
+    frame = MainWindow(None, "Karthika 0.2 - A Offline taWiktionary")
     app.MainLoop()
 
     
