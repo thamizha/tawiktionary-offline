@@ -3,11 +3,11 @@ This code repository contains the source files of the software Karthika, which i
 Dictionary made using the Wiktionary data obtained from its XML dumps. The words and its meanings
 are parsed from the dump and are indexed using the Whoosh Search Engine. There are two kinds of 
 indexing to be done:
-
+#### Bulk Indexing
 * creating the index of words and complete text associated with it - this results in large index size
 of about a few hundred megabytes and indexing takes more than a hour time in a average machine. 
 This is the currently employed method in the indexer.py and corresponding searching in searcher.py.
-
+#### Split Indexing
 * splitting the large XML dump file into smaller files and indexing the word and the associated filename.
 In this method the index size is about 30-40 megabytes in size and the xml chunks equal to the size of the
 original XML file. The time taken is about 5 min for splitting the files and 10 min for indexing. The splitting
@@ -29,17 +29,24 @@ The GUI is written using the wxPython library
 http://www.wxpython.org/
 
 ## How to use?
+These instructions are for running from the source.
 Before going down, download and install the dependencies mentioned above.
 
-This following instruction is for the download of source code v0.1.0 from this repo:
+This following instruction is for the download of source code v0.2.0 from this repo:
 
-1. Download the code version v0.1.0 from [here] (https://github.com/tecoholic/tawiktionary-offline/zipball/v0.1.0)
+1. Download the code version v0.2.0 from [here] (https://github.com/tecoholic/tawiktionary-offline/zipball/v0.2.0)
 2. Unzip it in a suitable location to get the folder "tawiktionary-offline"
 3. Download the latest wiktionary XML dump from http://dumps.wikimedia.org/tawiktionary/latest/tawiktionary-latest-pages-articles.xml.bz2
 4. Create a directory inside the tawiktionary-offline folder named "wiki-files"
 5. Move the XML dump file into the wiki-files folder
-6. Run `python indexer.py` and wait for the indexing to complete (you will see the words being indexed in the terminal)
-7. Run `python gui.py` and use the dictionary.
+6. Run `python gui.py`
+7. Select `File` -> `Split`, if you want to do Split Indexing (Recommended) or Go for step 9
+8. Select `Index` and Choose `Split Indexing` and `Start Indexing`. Once the indexing is complete your dictionary is ready to use
+9. Alternatively, if you want a fast response software, skip step 7 and goto `File` -> `Index` and select `Bulk Indexing' and hit 'Start Indexing`
+But it would take over 1 full hour for indexing to finish.
 
-Note: As already stated the output is raw wiki-markup, just go through it and write a parser to print readable data,
+Note:
+
+1. The Splitting and Indexing is only needed for the first time. Next time on, just run `gui.py` and use the dictionary
+2. As already stated the output is raw wiki-markup, just go through it and write a parser to print readable data,
 I would be glad to have a parser. :-P
