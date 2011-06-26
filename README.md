@@ -50,3 +50,22 @@ Note:
 1. The Splitting and Indexing is only needed for the first time. Next time on, just run `gui.py` and use the dictionary
 2. As already stated the output is raw wiki-markup, just go through it and write a parser to print readable data,
 I would be glad to have a parser. :-P
+
+## To Create a Standalone Application (.exe)
+### Dependency
+### py2exe
+A standalone .exe application can be built from these files using py2exe. Download the suitable py2exe from http://www.py2exe.org
+
+### How to?
+
+1. Open the tawiktionary-offline folder and run `python setup.py py2exe`
+2. Now open the newly created `dist` folder inside tha tawiktionary-offline folder and find gui.exe file.
+That is all you need. Take that file put it anywhere you like (even in other machines without Python installed)
+3. Download the latest wiktionary XML dump from http://dumps.wikimedia.org/tawiktionary/latest/tawiktionary-latest-pages-articles.xml.bz2
+4. Create a directory inside the tawiktionary-offline folder named "wiki-files"
+5. Move the XML dump file into the wiki-files folder
+6. Select `File` -> `Split`, if you want to do Split Indexing (Recommended) or Go for step 9
+7. Select `Index` and Choose `Split Indexing` and `Start Indexing`. Once the indexing is complete your dictionary is ready to use
+8. Alternatively, if you want a fast response software, skip step 7 and goto `File` -> `Index` and select `Bulk Indexing' and hit 'Start Indexing`
+But it would take over 1 full hour for indexing to finish.
+9. You can create a shortcut for this application anywhere you like (Desktop?) and run it from there.
