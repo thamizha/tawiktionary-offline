@@ -13,6 +13,7 @@ from wx.lib.wordwrap import wordwrap
 from searcher import *
 from splitter import RunSplitter
 from indexer import IndexDialog
+from downloader import DownloadDialog
 
 class MainWindow(wx.Frame):
     '''  This class defines the basis of the GUI of the entire application '''
@@ -21,6 +22,8 @@ class MainWindow(wx.Frame):
 
         # Menu
         filemenu = wx.Menu()
+        filemenu.Append(wx.ID_FILE3, "&Download",
+                        "Download the latest XML dump from Wikimedia")
         filemenu.Append(wx.ID_FILE1, "&Split",
                         "Create smaller chunks from large XML file")
         filemenu.Append(wx.ID_FILE2, "&Index",
@@ -61,6 +64,7 @@ class MainWindow(wx.Frame):
         self.Bind(wx.EVT_MENU, self.ShowAbout, id=wx.ID_ABOUT)
         self.Bind(wx.EVT_MENU, self.RunSplitter, id=wx.ID_FILE1)
         self.Bind(wx.EVT_MENU, self.OpenIndexDialog, id=wx.ID_FILE2)
+        self.Bind(wx.EVT_MENU, self.RunDownloader, id=wx.ID_FILE3)
         
         #sizers for placemnt
         self.hsizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -133,6 +137,13 @@ class MainWindow(wx.Frame):
         dia = IndexDialog(self, -1, "Indexer")
         dia.ShowModal()
         dia.Destroy()
+        return True
+
+    def RunDownloader(self, event):
+        ''' The RunDownloader runs the downloader.py function '''
+        dwn = DownloadDialog(self, -1, "Downloader")
+        dwn.ShowModal()
+        dwn.Destroy()
         return True
         
 
