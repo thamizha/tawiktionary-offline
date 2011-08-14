@@ -1,23 +1,17 @@
 # Karthika - A Offline Tamil Wiktionary
 This code repository contains the source files of the software Karthika, which is a offline
 Dictionary made using the Wiktionary data obtained from its XML dumps. The words and its meanings
-are parsed from the dump and are indexed using the Whoosh Search Engine. There are two kinds of 
-indexing to be done:
-#### Bulk Indexing
-* creating the index of words and complete text associated with it - this results in large index size
+are parsed from the dump and are indexed using the Whoosh Search Engine. There are two kinds of indexing to be done:
+#### 1.Bulk Indexing
+Creating the index of words and complete text associated with it - this results in large index size
 of about a few hundred megabytes and indexing takes more than a hour time in a average machine. 
 This is the currently employed method in the indexer.py and corresponding searching in searcher.py.
-#### Split Indexing
-* splitting the large XML dump file into smaller files and indexing the word and the associated filename.
-In this method the index size is about 30-40 megabytes in size and the xml chunks equal to the size of the
-original XML file. The time taken is about 5 min for splitting the files and 10 min for indexing. The splitting
-can be done using the splitter.py file.
+
+#### 2.Split Indexing
+Splitting the large XML dump file into smaller files and indexing the word and the associated filename. In this method the index size is about 30-40 megabytes in size and the xml chunks equal to the size of the original XML file. The time taken is about 5 min for splitting the files and 10 min for indexing. The splitting can be done using the splitter.py file.
 
 ### Note
-1. The code for the second type of searching is being written and the way to include both types in the final software
-is being worked out.
-2. The current ouput is raw wiki markup text. Due to its unparseablity, raw text is being displayed. Steps are being 
-taken to parse it and produce a readable content.
+The current ouput is raw wiki markup text. Due to its unparseablity, raw text is being displayed. Steps are being taken to parse it and produce a readable content.
 
 ## Dependencies
 ### 1. Whoosh
