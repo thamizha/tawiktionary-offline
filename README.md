@@ -48,7 +48,7 @@ Note:
 ### py2exe
 A standalone .exe application can be built from these files using py2exe. Download the suitable py2exe from http://www.py2exe.org
 
-### How to?
+### How to use?
 
 1. Open the tawiktionary-offline folder and run `python setup.py py2exe`
 2. Now open the newly created `dist` folder inside tha tawiktionary-offline folder and find gui.exe file. That is all you need. Take that file put it anywhere you like (even in other machines without Python installed)
@@ -57,5 +57,5 @@ A standalone .exe application can be built from these files using py2exe. Downlo
 5. Move the XML dump file into the wiki-files folder
 6. Select `File` -> `Split`, if you want to do Split Indexing (Recommended) or Go for step 9
 7. Select `Index` and Choose `Split Indexing` and `Start Indexing`. Once the indexing is complete your dictionary is ready to use
-8. Alternatively, if you want a fast response software, skip step 7 and goto `File` -> `Index` and select `Bulk Indexing' and hit 'Start Indexing`. But it would take over 1 full hour for indexing to finish.
+8. Alternatively, if you want a fast response software, skip step 7 and goto `File` -> `Index` and select `Bulk Indexing` and hit `Start Indexing`. But it would take over 1 full hour for indexing to finish.
 9. You can create a shortcut for this application anywhere you like (Desktop?) and run it from there.
