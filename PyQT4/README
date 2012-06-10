@@ -1,6 +1,6 @@
-A Wikipedia-Dump Reader.
+Tamil Wiktionary Offline Reader.
 
-This Reader displays the text-only archives of wikipedia, which can be
+This Reader displays the text-only archives of wiktionary, which can be
 downloaded from :
 	http://download.wikimedia.org/backup-index.html
 and are usually named like :
@@ -10,57 +10,43 @@ It requires Python, Qt and PyQt. Altough only Qt4/PyQt4 is supported now, the
 old Qt3/PyQt3 code is still included and should still work.
 It also assumes you have basic tools like gzip, zcat and zgrep, tail, head...
 
-(Optional) You will need the command line applications "texvc" and "latex" in
-order to render math expressions. (texvc is provided with this application)
-
-This reader is not yet complete although fairly useable in its current form.
+The wiki markup parsing of this reader is not yet complete although fairly useable in its current form.
 
 Usage
 -----
-1. on the commandline, run:
-	python dumpReader.py
-   or just click on it from your favorite file manager
+1. Make sure you have the following folders:
+	a) The "chunks" folder that contains the broken-up downloaded zip (bz2) files.
+	b) The "indexdir" folder that contains the index files.
+	These two folders can be created by downloading the latest wiktionary dump file and using the wxPython application in the "tawiktionary-offline" folder by running the "gui.py" file.
+2. On the commandline, run:
+	python Karthika.py
+	or just click on it from your favorite file manager
+3. The main window contains the article title area (top), list of articles found (left) main text area
+   (right). You can go to an article directly by typing its name then clicking the "Go" button, or by clicking a link from the main
+   text area. By default, clicking a link loads the article in the background.
+   If you type a Tamil or English word and then click the "Search" button, a list of related articles found will load in the list on the the left. 
+4. The "Karthika.exe" file and the "chunks" and "indexdir" folders are all you need to run the application on any Windows PC.
 
-2. Browse and select the archive (some file probably named *.xml.bz2)
+Software Versions used
+----------------------
+1. Python: 2.7.3
+2. PyQT4: for Python 2.7
+3. Whoosh 2.3.2 (for indexing and searching)
+4. Beautiful Soup 3.2.1 (for XML parsing)
+5. Py2exe (for building the Windows exe)
 
-3. If it's the first time, an index is created, which can take a lot of time.
-   The english dumps currently need more than an hour. Note that if you
-   abort during the index creation, it will be useable, altough obviously
-   incomplete. (Useful for users who want to quicktest the program ;)
-   Currently, the program need write permission on the same directory.
-
-4. The main windows contains the article title area (top), main text area
-   (left) and article history (right). You can go to an article by typing
-   its name then click the "Go" button, or by clicking a link from the main
-   text area. By default, clicking a link load the article in the background.
-   The search-box area allows to keyword search among the articles' title.
-   You can also go to a random article by clicking "Go" with an empty entry.
-
-*  You will need the command line application "Texvc" and in order to
-   render math expressions. This tool requires "Latex". Note that it
-   will use a directory (usually /tmp/wikipediaDumpReader_texvm/) to
-   render the images, which is cleared at the restart of the application.
+I am able to run this on Ubuntu as well as Windows XP. The exe is built on Windows XP.
 
 FAQ
 ---
-Q. Can i get my dump quickly up-to-date while i'm online ?
-A. No. As far as i know, there is no way to "update" your currently downloaded
-   xml.bz2 dump to sync it. The only way to get up-to-date is to delete the old 
-   dump (and also generated indexes files) and to fully re-download a new one.
-
-Q. I don't like the background-loading behaviour. Can i change it ?
-A. If you want to immediately see the content of clicked links, you have to
-   manually modify the program : Edit the "dumpReader.py" file, go to the line
-   which says "self.loadTabInBackground = True" and change "True" to "False".
-
 Q. Can i disable the graphical rendering of the maths ? ("latex rendering")
 A. Yes, but you will have to manually modify the program : Edit the
-   "dumpReader.py" file, go to the line which says "self.latexRendering = True"
+   "Karthika.py" file, go to the line which says "self.latexRendering = True"
    and change "True" to "False"
 
 Q. Can i change the text size ?
 A. Font Size can now be changed, altough you will have to manually modify
-   the program : Edit the "dumpReader.py" file, go to the line which says
+   the program : Edit the "Karthika.py" file, go to the line which says
    "fontSize = 9" and change "9" to whatever point size fits you best.
    This will only change the font size of the text area.
 
@@ -68,23 +54,20 @@ Q. Can i edit the User Interface to change more settings ?
 A. If you have the Qt4 "designer" program, shipped with Qt-tools, you
    can edit "form3.ui" to fit your needs
 
-Q. What is the "debug" button ?
-A. This is needed only for developers. When toggle-on, each newly-loaded
-   article is also copied on the upper area. When pressing "apply regex",
-   it's filtered to the lower area.
+Appreciation
+------------
+While searching for a way to build on Arunmozhi's code base, I found the following project on Launchpad 
+Launchpad by Benjamin Thyreau - An application to easily read Wikipedia's downloaded dump files:
+https://launchpad.net/wikipediadumpreader
 
-Q. The program says : RuntimeWarning: Python C API version mismatch for
-   module bz2: This Python has API version 1013, module bz2 has version 1012.
-A. This can be safely ignored. This occurs because i provides a precompiled
-   binary bz2.so module. You are welcome to recompile your own if you want
-   from the src/ directory. Warning : this is NOT the standard bz2.so python
-   module, it's a static copy with some changes.
+As you can see from the above link, this is open source and dual licensed under Simplified BSD Licence and GNU GPL v2.
 
-Q. How can I delete entries from the dump-selection initial dialog box ?
-A. There is no other way than editing the file ".wikipediadumpreaderrc" from
-   your home directory and removing the lines you don't want. You may need
-   to check "display hidden files" on your file manager to find this file.
+By combining features from Benjamin's code and Arunmozhi's code, I have built an application that seems to do the basic functions OK.
 
+Benjamin's code base had two things that we are looking for: PyQT4 user interface and more usable (though not complete) parsing of the wiki markup. On top of that he had built the ability to follow links. A user can click on hyperlinked words in the results to look-up those words further. However, on additional  testing I discovered his code base had one big limitation for our use. It can only be used as an English to Tamil dictionary, but Tamil words cannot be looked up. This is because his indexing was not in unicode - as he himself noted in comments in his code.
+
+Arunmozhi uses Python Whoosh module for indexing and searching. Whoosh is natively built to handle Unicode. He also split the larger Wiktionary dump file into smaller chunks for faster look-ups. And he went a step further and built a Windows exe as well. I managed to combine Benjamin's PyQT4 user interface and wiki parsing with Arunmozhi's indexing/searching and then built a Windows exe following Arunmozhi's steps.
+
+I would like to record my appreciation of both Benjamin Thyreau and Arunmozhi for their valuable work with Python code as well as for making their code available as open source.
 --
-Benjamin Thyreau - 7/2009
-wikireader@decideur.info
+Ashok Ramachandran - 6/2012
