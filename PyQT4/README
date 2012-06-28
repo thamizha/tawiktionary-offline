@@ -27,15 +27,23 @@ Usage
    If you type a Tamil or English word and then click the "Search" button, a list of related articles found will load in the list on the the left. 
 4. The "Karthika.exe" file and the "chunks" and "indexdir" folders are all you need to run the application on any Windows PC.
 
-Software Versions used
-----------------------
-1. Python: 2.7.3
-2. PyQT4: for Python 2.7
-3. Whoosh 2.3.2 (for indexing and searching)
-4. Beautiful Soup 3.2.1 (for XML parsing)
-5. Py2exe (for building the Windows exe)
+How to set up for development in Windows XP (should work on Vista and Win 7 as well)
+------------------------------------------------------------------------------------
+1. Install Python 2.7.3
+2. Install PyQT4 for Python 2.7 (the GUI)
+3. Install Whoosh 2.3.2 (for indexing and searching)
+4. Install Beautiful Soup 3.2.1 (for XML parsing)
+5. Copy the PYQT4 folder under the tawiktionary-offline project from this Github site  
+6. Launch a command window
+7. Change directory to the PYQT4 folder you copied in step 5 above
+8. Run <pythondir>\python Karthika.py. For example, I have Python installed in the C:\Python27 folder. I run "C:\Python27\python Karthika.py". This should launch the GUI (You may see an error message "Error while loading math parser" in the console. This is harmless and can be safely ignored for now). You can enter a Tamil or English word and lookup or search.
+9. You can use any text editor for editing the Python code files (.py). I am using Notepad++ on Windows.
 
-I am able to run this on Ubuntu as well as Windows XP. The exe is built on Windows XP.
+Additional notes for developers
+-------------------------------
+1. I am able to run this on Ubuntu as well. You may already have Python installed. Check the version and update, if needed.
+2. For steps 2 to 4 above, you can use easy_install that allows you to "Download, build, install, upgrade, and uninstall Python packages -- easily!". I downloaded setuptools-0.6c11.win32-py2.7.exe from here http://pypi.python.org/pypi/setuptools
+3. For building the Windows exe you have to install Py2exe on Windows. I was able to build the exe successfully using the command "python setup.py py2exe --includes sip"
 
 FAQ
 ---
